@@ -40,19 +40,14 @@ def init_datadog() -> None:
     }
     initialize(**options)
     
-    # Configure tracer
-    tracer.configure(
-        hostname=os.getenv("DD_AGENT_HOST", "127.0.0.1"),
-        port=int(os.getenv("DD_TRACE_AGENT_PORT", "8126"))
-    )
-    
     # Enable automatic instrumentation for common libraries
-    patch_all(
-        fastapi=True,
-        requests=True,
-        httpx=True,
-        logging=True
-    )
+    # Note: tracer is auto-configured via DD_* environment variables
+    try:
+        patch_all()
+    except Exception as e:
+        # Gracefully handle if some patches fail
+        logger = structlog.get_logger()
+        logger.warning("patch_all_partial_failure", error=str(e))
     
     # Setup structured logging
     _setup_logging(dd_service, dd_env, dd_version)
