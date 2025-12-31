@@ -1,0 +1,62 @@
+{
+  "title": "LLM Observability Dashboard",
+  "description": "Real-time observability for Gemini-powered LLM applications",
+  "widgets": [
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "LLM Request Latency (ms)",
+        "requests": [
+          {
+            "q": "avg:llm.request.latency_ms{*}",
+            "display_type": "line"
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "LLM Error Rate",
+        "requests": [
+          {
+            "q": "sum:llm.request.error_count{*}",
+            "display_type": "bars"
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Token Usage per Request",
+        "requests": [
+          {
+            "q": "avg:llm.tokens.used{*}",
+            "display_type": "line"
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "timeseries",
+        "title": "Estimated LLM Cost (USD)",
+        "requests": [
+          {
+            "q": "avg:llm.estimated.cost_usd{*}",
+            "display_type": "line"
+          }
+        ]
+      }
+    },
+    {
+      "definition": {
+        "type": "alert_graph",
+        "title": "Active LLM Alerts",
+        "alert_id": "*"
+      }
+    }
+  ],
+  "layout_type": "ordered"
+}

@@ -1,0 +1,69 @@
+[
+  {
+    "name": "High LLM Request Latency",
+    "type": "metric alert",
+    "query": "avg(last_5m):avg:llm.request.latency_ms{*} > 3000",
+    "message": "LLM latency has exceeded acceptable thresholds. Investigate Gemini model performance, prompt size, or traffic spikes.",
+    "tags": [
+      "service:llm-observability-app",
+      "component:gemini",
+      "severity:high"
+    ],
+    "options": {
+      "thresholds": {
+        "critical": 3000
+      },
+      "notify_audit": false,
+      "include_tags": true,
+      "evaluation_delay": 60
+    }
+  },
+  {
+    "name": "Elevated LLM Error Rate",
+    "type": "metric alert",
+    "query": "sum(last_5m):sum:llm.request.error_count{*} > 5",
+    "message": "LLM error rate is elevated. Possible Gemini API failures, malformed prompts, or timeout issues.",
+    "tags": [
+      "service:llm-observability-app",
+      "component:gemini",
+      "severity:high"
+    ],
+    "options": {
+      "thresholds": {
+        "critical": 5
+      },
+      "include_tags": true
+    }
+  },
+  {
+    "name": "Abnormal LLM Token Usage",
+    "type": "query alert",
+    "query": "anomalies(avg:llm.tokens.used{*}, 'basic', 2, direction='above', interval=60)",
+    "message": "Detected abnormal token usage. Possible prompt regression, misuse, or abuse detected.",
+    "tags": [
+      "service:llm-observability-app",
+      "component:gemini",
+      "severity:medium"
+    ],
+    "options": {
+      "include_tags": true
+    }
+  },
+  {
+    "name": "LLM Cost Spike Detected",
+    "type": "metric alert",
+    "query": "avg(last_10m):avg:llm.estimated.cost_usd{*} > 2",
+    "message": "Estimated LLM cost has spiked beyond baseline. Investigate token usage and traffic patterns.",
+    "tags": [
+      "service:llm-observability-app",
+      "component:gemini",
+      "severity:medium"
+    ],
+    "options": {
+      "thresholds": {
+        "critical": 2
+      },
+      "include_tags": true
+    }
+  }
+]

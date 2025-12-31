@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LLM Observability Demo - Query Gemini with real-time monitoring">
+    <title>LLM Observability | Gemini + Datadog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🔍</span>
+                <h1>LLM Observability</h1>
+            </div>
+            <p class="subtitle">Production-grade monitoring for Gemini-powered AI</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Query Section -->
+            <section class="query-section">
+                <div class="card">
+                    <h2>Query Gemini</h2>
+                    <form id="queryForm">
+                        <div class="form-group">
+                            <label for="prompt">Enter your prompt</label>
+                            <textarea 
+                                id="prompt" 
+                                name="prompt" 
+                                placeholder="Ask anything... e.g., 'What is AI observability?'"
+                                rows="4"
+                                required
+                            ></textarea>
+                        </div>
+                        <button type="submit" id="submitBtn" class="btn-primary">
+                            <span class="btn-text">Send to Gemini</span>
+                            <span class="btn-loader" hidden>
+                                <span class="spinner"></span>
+                                Processing...
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Response Section -->
+            <section class="response-section" id="responseSection" hidden>
+                <div class="card">
+                    <h2>Response</h2>
+                    
+                    <!-- Metrics Bar -->
+                    <div class="metrics-bar">
+                        <div class="metric">
+                            <span class="metric-label">Latency</span>
+                            <span class="metric-value" id="metricLatency">--</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Tokens</span>
+                            <span class="metric-value" id="metricTokens">--</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Cost</span>
+                            <span class="metric-value" id="metricCost">--</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Response Content -->
+                    <div class="response-content" id="responseContent">
+                        <!-- Response text will be inserted here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Error Section -->
+            <section class="error-section" id="errorSection" hidden>
+                <div class="card card-error">
+                    <h2>⚠️ Error</h2>
+                    <p id="errorMessage"></p>
+                    <button class="btn-secondary" id="dismissError">Dismiss</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="tech-stack">
+                <span class="badge">Google Gemini</span>
+                <span class="badge">Vertex AI</span>
+                <span class="badge">Datadog</span>
+                <span class="badge">FastAPI</span>
+            </div>
+            <p class="copyright">Built for the AI Observability Hackathon</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
