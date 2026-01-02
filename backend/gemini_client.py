@@ -96,11 +96,20 @@ class GeminiClient:
             # Calculate latency
             latency_ms = (time.perf_counter() - start_time) * 1000
             
+            # Extract response text
+            response_text = response.text if hasattr(response, 'text') else str(response)
+            
             # Extract token counts from usage metadata
             usage = response.usage_metadata
-            input_tokens = usage.prompt_token_count if usage else len(prompt.split())
-            output_tokens = usage.candidates_token_count if usage else len(response.text.split())
-            total_tokens = input_tokens + output_tokens
+            if usage:
+                input_tokens = usage.prompt_token_count
+                output_tokens = usage.candidates_token_count
+                total_tokens = usage.total_token_count if hasattr(usage, 'total_token_count') else (input_tokens + output_tokens)
+            else:
+                # Fallback: estimate tokens (rough approximation)
+                input_tokens = len(prompt.split()) * 1.3  # ~1.3 tokens per word
+                output_tokens = len(response_text.split()) * 1.3
+                total_tokens = int(input_tokens + output_tokens)
             
             # Calculate estimated cost
             estimated_cost = (
@@ -127,10 +136,10 @@ class GeminiClient:
             )
             
             return GeminiResponse(
-                text=response.text,
-                input_tokens=input_tokens,
-                output_tokens=output_tokens,
-                total_tokens=total_tokens,
+                text=response_text,
+                input_tokens=int(input_tokens),
+                output_tokens=int(output_tokens),
+                total_tokens=int(total_tokens),
                 latency_ms=latency_ms,
                 estimated_cost_usd=estimated_cost
             )
